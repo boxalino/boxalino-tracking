@@ -37,7 +37,9 @@ Boxalino Analytics
           promise = fn.apply(api, cmd);
         } catch (_error) {
           e = _error;
-          log('error in api call', e);
+          if (log != null) {
+            log('error in api call', e);
+          }
         }
         if ((callback != null) && typeof promise === 'function') {
           return promise(callback);
@@ -713,7 +715,9 @@ Boxalino Analytics
       parameters._src = features.source.name;
       parameters._scr = "" + features.screen.width + "x" + features.screen.height;
       parameters._frm = "" + features.frame.width + "x" + features.frame.height;
-      parameters._ln = features.language;
+      if (parameters._ln == null) {
+        parameters._ln = features.language;
+      }
       parameters._tx = ((function() {
         var _results;
         _results = [];
@@ -950,11 +954,15 @@ Boxalino Analytics
       parameters.productId = productId;
       return api.trackEvent('goal', parameters);
     };
-    api.trackChoiceClick = function(choice, parameters) {
+    api.trackChoiceClick = function(choice, productId, parameters) {
+      if (productId == null) {
+        productId = null;
+      }
       if (parameters == null) {
         parameters = {};
       }
       parameters.id = choice;
+      parameters.productId = productId;
       return api.trackEvent('choiceClick', parameters);
     };
     if (window._bxq != null) {
